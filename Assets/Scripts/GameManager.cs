@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour
     public bool checkSpawnSpecial;
     float delayCount = 0.15f;
 
+    public GameObject menuPanel;
+    public TMP_InputField xInput;
+    public TMP_InputField yInput;
+
     [System.Serializable]
     public class AllRow
     {
@@ -40,9 +44,9 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-        startTimer = startTime;
-        GenerateGrid();
+        
     }
+
     public void GetAllRowAndSlot(int x, int y)
     {
         gridSize = new Vector2(x,y);
@@ -54,7 +58,7 @@ public class GameManager : MonoBehaviour
             allRows.Add(allRow);
         }
 
-        for(int i = 0; i < x; i++)
+        for(int i = 0; i < y; i++)
         {
             foreach(MySlot mySlot in allRows[i].myRow.gameObject.GetComponentsInChildren<MySlot>())
             {
@@ -65,11 +69,6 @@ public class GameManager : MonoBehaviour
 
     private void Update() 
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            _starting = true;
-        }
-
         if(_starting)
         {
             textTimerPanel.SetActive(true);
@@ -129,6 +128,33 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void StartGame()
+    {
+        gridSize = new Vector2(int.Parse(xInput.text),int.Parse(yInput.text));
+        if(int.Parse(xInput.text) < 6)
+        {
+            gridSize.x = 6;
+        }
+        else if(int.Parse(xInput.text) > 12)
+        {
+            gridSize.x = 12;
+        }
+
+        if(int.Parse(yInput.text) < 6)
+        {
+            gridSize.y = 6;
+        }
+        else if(int.Parse(yInput.text) > 20)
+        {
+            gridSize.y = 20;
+        }
+
+        _starting = true;
+        menuPanel.SetActive(false);
+        startTimer = startTime;
+        GenerateGrid();
     }
 
     public void SpawnDotToAllSlots()
@@ -250,7 +276,39 @@ public class GameManager : MonoBehaviour
             {
                 if(allRows[i].mySlots[vectorX].dotType)
                 {
-                    allRows[i].mySlots[vectorX].ForceDestory();
+                    if(allRows[i].mySlots[vectorX].dotType.specialDot == DotType.Special.Normal)
+                    {
+                        allRows[i].mySlots[vectorX].ForceDestory();
+                    }
+                    else if(allRows[i].mySlots[vectorX].dotType.specialDot == DotType.Special.CrossBomb)
+                    {
+                        allRows[i].mySlots[vectorX].ForceDestory();
+                    }
+                    else if(allRows[i].mySlots[vectorX].dotType.specialDot == DotType.Special.Disco)
+                    {
+                         if(allRows[i].mySlots[vectorX] != allRows[vectorY].mySlots[vectorX])
+                        {
+                            int number = Random.Range(0,4);
+                            switch (number)
+                            {
+                                case 0:
+                                    DiscoDestory(DotType.DotColor.Red);
+                                    break;
+
+                                case 1:
+                                    DiscoDestory(DotType.DotColor.Green);
+                                    break;
+
+                                case 2:
+                                    DiscoDestory(DotType.DotColor.Blue);
+                                    break;
+
+                                case 3:
+                                    DiscoDestory(DotType.DotColor.Yellow);
+                                    break;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -258,7 +316,10 @@ public class GameManager : MonoBehaviour
             {
                 if(allRows[vectorY].mySlots[a].dotType)
                 {
-                    allRows[vectorY].mySlots[a].ForceDestory();
+                    if(allRows[vectorY].mySlots[a].dotType.specialDot == DotType.Special.Normal)
+                    {
+                        allRows[vectorY].mySlots[a].ForceDestory();
+                    }
                 }
             }
     }
@@ -275,7 +336,10 @@ public class GameManager : MonoBehaviour
                     {
                         if(allRows[i].mySlots[a].dotType.dotColor == dotColor)
                         {
-                            allRows[i].mySlots[a].ForceDestory();
+                            if(allRows[i].mySlots[a].dotType.specialDot == DotType.Special.Normal)
+                            {
+                                allRows[i].mySlots[a].ForceDestory();
+                            }
                         }
                     }  
                 }

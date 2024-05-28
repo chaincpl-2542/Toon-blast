@@ -97,4 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dotColor: 0
-  dotPosition: {x: 0, y: 0}
+  specialDot: 0
+  dotDestoryEffect: {fileID: 8835831460247975826, guid: d4498b1363e8f514685e6d80fb6b1de1, type: 3}
+  checkDestory: 0
+  currentSlot: {fileID: 0}

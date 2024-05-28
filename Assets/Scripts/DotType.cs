@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening.Plugins;
 using UnityEngine;
+using DG.Tweening;
+using UnityEditor;
 
 public class DotType : MonoBehaviour
 {
     public DotColor dotColor;
     public Special specialDot;
+    public GameObject dotDestoryEffect; 
     public bool checkDestory;
     public MySlot currentSlot;
     SpriteRenderer spriteRenderer;
@@ -81,7 +84,12 @@ public class DotType : MonoBehaviour
                     spriteRenderer.color = yellowColor;
                     break;
             }  
-        }  
+        }
+        else
+        {
+
+            spriteRenderer.DOColor(Random.ColorHSV(),0.6f);
+        }
     }
     public void DotDestory()
     {
@@ -89,6 +97,24 @@ public class DotType : MonoBehaviour
         
         if(specialDot == DotType.Special.Normal)
         {
+            GameObject effect = Instantiate(dotDestoryEffect,gameObject.transform.position,Quaternion.identity);
+            ParticleSystem.MainModule main = effect.GetComponent<ParticleSystem>().main;
+            if(dotColor == DotColor.Red)
+            {
+                main.startColor = ColorHelper.HexToColor("#F89393");
+            }
+            else if(dotColor == DotColor.Green)
+            {
+                main.startColor = ColorHelper.HexToColor("#AAF18C");
+            }
+            else if(dotColor == DotColor.Blue)
+            {
+                main.startColor = ColorHelper.HexToColor("#B4E9FF");
+            }
+            else if(dotColor == DotColor.Yellow)
+            {
+                main.startColor = ColorHelper.HexToColor("#F3ED60");
+            }
             Destroy(gameObject);
         }
         else if(specialDot == DotType.Special.CrossBomb)
