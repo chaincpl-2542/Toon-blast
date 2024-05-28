@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class MyRow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int rowNumber;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
