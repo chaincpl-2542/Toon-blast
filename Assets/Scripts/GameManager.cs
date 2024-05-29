@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -349,7 +350,7 @@ public class GameManager : MonoBehaviour
 
     public void FillEmptySlot()
     {
-         for(int i = 0; i < gridSize.y; i++)
+        for(int i = 0; i < gridSize.y; i++)
         {
             for(int a = 0; a < gridSize.x; a++)
             {
@@ -366,5 +367,10 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
